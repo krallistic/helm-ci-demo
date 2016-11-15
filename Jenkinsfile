@@ -5,7 +5,7 @@ node {
   stage 'Checkout'
   checkout scm
 
-  dir('backend') {
+  dir('backend/') {
     //TODO change user
     def imageTag = "jkaralus/${backendName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
