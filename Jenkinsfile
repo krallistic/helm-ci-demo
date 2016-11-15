@@ -4,19 +4,24 @@ node {
   def backendName = "${appName}-backend"
   stage 'Checkout'
   checkout scm
-  //TODO change user
-  def imageTag = "jkaralus/${backendName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+
+  dir('backend') {
+    //TODO change user
+    def imageTag = "jkaralus/${backendName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
 
-  stage 'Building Image'
-  docker.build ${imageTag} "backend/"
-  //sh("docker build -t ${imageTag} backend/")
+    stage 'Building Image'
+      cd backend
+      docker.build ${imageTag} "backend/"
+      //sh("docker build -t ${imageTag} backend/")
 
-  stage 'UnitTest with Image'
-  sh("docker run  ${imageTag} pytest tests/")
+      stage 'UnitTest with Image'
+      sh("docker run  ${imageTag} pytest tests/")
 
-  stage 'Push image to registry'
-  //sh("gcloud docker push ${imageTag}")
+      stage 'Push image to registry'
+      //sh("gcloud docker push ${imageTag}")
+  }
+
 
 
   input message: 'Deploy to Prod?', ok: 'Yes'
