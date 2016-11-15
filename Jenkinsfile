@@ -15,9 +15,11 @@ node {
   stage 'Push image to registry'
   //sh("gcloud docker push ${imageTag}")
 
-  input message: 'Please Confirm Deploy from Staging to Production', parameters: [choice(choices: ['Yes', 'No'], description: '', name: 'Answer')]
 
-  
+  input message: 'Deploy to Prod?', ok: 'Yes'
+  //input message: 'Please Confirm Deploy from Staging to Production', parameters: [choice(choices: ['Yes', 'No'], description: '', name: 'Answer')]
+
+
   stage "Deploy Application"
   switch (env.BRANCH_NAME) {
     // Roll out to staging
