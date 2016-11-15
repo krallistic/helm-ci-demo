@@ -1,16 +1,18 @@
 node {
   def appName = 'helm-ci-demo'
-  def feSvcName = "${appName}-frontend"
 
-  //def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
-
+  def backendName = "${appName}-backend"
+  stage 'Checkout'
   checkout scm
+  //TODO change user
+  def imageTag = "jkaralus/${backendName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
-  stage 'Build image'
-  //sh("docker build -t ${imageTag} .")
 
-  stage 'Run Go tests'
-  //sh("docker run ${imageTag} go test")
+  stage 'Building Image'
+  sh("docker build -t ${imageTag} backend/")
+
+  stage 'UnitTest with Image'
+  sh("docker run  ${imageTag} pytest tests/")
 
   stage 'Push image to registry'
   //sh("gcloud docker push ${imageTag}")
