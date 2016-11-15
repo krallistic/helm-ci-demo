@@ -9,7 +9,7 @@ node {
 
 
   stage 'Building Image'
-  docker.build ${imageTag} backend/
+  docker.build ${imageTag} "backend/"
   //sh("docker build -t ${imageTag} backend/")
 
   stage 'UnitTest with Image'
